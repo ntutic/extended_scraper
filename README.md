@@ -1,4 +1,6 @@
 
+# Deprecated, replaced by `extended_scrapy`
+
 # **Handy Scraping: framework for reusable and flexible routines**
 
 ## **Workflow**
