@@ -1,0 +1,36 @@
+{
+    "scrape_segment": {
+        "parameters": {
+            "path_out": "data/MSFT_fins",
+            "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-%s-Q%s/segment-revenues",
+            "next_page": {
+                    "in_url": ["year", "quarter"],
+                    "start": [2022, 1],
+                    "end": [2013, 1]
+            }
+        },
+        "functions": {
+            "scrape_values": {
+                "containers": {
+                    "tag": "tbody"
+                },
+                "values": {
+                    "from": {
+                        
+
+                        
+                    }
+                    "field_*": {
+                        "tag": "h6",
+                        "attr": "text"
+                    },
+                    "value_*": {
+                        "tag": "p",
+                        "attr": "text"
+                    },
+                    "suffix": "construction_"
+                }
+            }
+        }
+    }
+}

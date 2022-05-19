@@ -1,0 +1,207 @@
+{
+    "scrape_properties_BTB": {
+        "parameters": {
+            "path_out": "data/1_BTB_REIT",
+            "url": "https://www.btbreit.com/real-estate-portfolio/?listing-type=&location=&area=&keyword=&feature=",
+            "next_page": [
+                {
+                    "tag": "ul",
+                    "type": "class",
+                    "sel": "page-numbers",
+                    "child": {
+                        "tag": "a",
+                        "type": "class",
+                        "sel": "next",
+                        "attr": "href"
+                    }
+                }
+            ],
+            "download_entry": {
+                "url": ".href",
+                "file_name": ".id_value"
+            }
+        },
+        "functions": {
+            "scrape_values": {
+                "containers": {
+                    "tag": "div",
+                    "type": "class",
+                    "sel": "wpsight-listings",
+                    "child": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "listing"
+                    }
+                },
+                "values": {
+                    "id_value": "serial",
+                    "href": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "wpsight-listing-title",
+                        "child": {
+                            "tag": "h3",
+                            "type": "class",
+                            "sel": "entry-title",
+                            "child": {
+                                "tag": "a",
+                                "attr": "href"
+                            }
+                        }
+                    },
+                    "title": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "wpsight-listing-title",
+                        "child": {
+                            "tag": "h3",
+                            "type": "class",
+                            "sel": "entry-title",
+                            "child": {
+                                "tag": "a",
+                                "attr": "text"
+                            }
+                        }
+                    },
+                    "location": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "listing_column_inner",
+                        "child": {
+                            "tag": "h5",
+                            "type": "class",
+                            "sel": "listing_location",
+                            "attr": "text"
+                        }
+                    },
+                    "sector": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "listing_column_inner",
+                        "child": {
+                            "tag": "h5",
+                            "type": "class",
+                            "sel": "listing_type",
+                            "attr": "text"
+                        }
+                    }
+                }
+            },
+            "entry_to_db": {
+                "type": "sql",
+                "table": "property",
+                "serial": "id",
+                "fields": {
+                    "id": ".id_value",
+                    "url": ".href",
+                    "name": ".title",
+                    "location": ".location",
+                    "sector": ".sector",
+                    "id_company": 1
+                }
+            }
+        }
+    },
+    "scrape_details_BTB": {
+        "parameters": {
+            "url": "data/1_BTB_REIT/"
+        },
+        "functions": {
+            "scrape_values": {
+                "containers": {
+                    "tag": "div",
+                    "type": "class",
+                    "sel": "single_listing_description_content"
+                },
+                "values": {
+                    "description": {
+                        "tag": "div",
+                        "type": "id",
+                        "sel": "trtext",
+                        "attr": "text"
+                    }
+                }
+            },
+            "scrape_values2": {
+                "containers": {
+                    "tag": "div",
+                    "type": "class",
+                    "sel": "property_details_table",
+                    "child": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "single_detail"
+                    }
+                },
+                "values": {
+                    "field_*": {
+                        "tag": "h6",
+                        "attr": "text"
+                    },
+                    "value_*": {
+                        "tag": "p",
+                        "attr": "text"
+                    },
+                    "suffix": "construction_"
+                }
+            },
+            "scrape_values3": {
+                "containers": {
+                    "tag": "div",
+                    "type": "class",
+                    "sel": "leasing_details_table",
+                    "child": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "single_detail"
+                    }
+                },
+                "values": {
+                    "field_*": {
+                        "tag": "h6",
+                        "attr": "text"
+                    },
+                    "value_*": {
+                        "tag": "p",
+                        "attr": "text"
+                    },
+                    "suffix": "lease_"
+                }
+            },
+            "scrape_values4": {
+                "containers": {
+                    "tag": "div",
+                    "type": "class",
+                    "sel": "availabilities_table",
+                    "child": {
+                        "tag": "div",
+                        "type": "class",
+                        "sel": "single_accessibility"
+                    }
+                },
+                "values": {
+                    "field_*": {
+                        "tag": "h6",
+                        "attr": "text"
+                    },
+                    "value_*": {
+                        "tag": "p",
+                        "attr": "text"
+                    },
+                    "suffix": "availability_"
+                }
+            },
+            "entry_to_db": {
+                "type": "sql",
+                "table": "property",
+                "serial": "id",
+                "fields": {
+                    "id_stat": ".field_*",
+                    "id_property": "select id from property where url = .self.url;",
+                    "id_company": 1,
+                    "value": ".value_*"
+                }
+            }
+        }
+    }
+}
